@@ -160,27 +160,26 @@ main ()
     {
       int t = rand () % text.size ();
       int col = rand () % 10;
-      if (col == 1)
-      {
-        cout << "[\033[37m  Load resurs  \033[0m] " << text[t] << endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-      }
-      else if (col == 4)
-      {
-        cout << "[\033[31m   Stopping    \033[0m] " << text[t] << endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(700));
-      }
-      else if (col == 6)
-      {
-        cout << "[\033[33m  Progressing  \033[0m] " << text[t] << endl;
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(600));
-      }
-      else
+      switch (col) 
       {
-        cout << "[\033[32m   Starting    \033[0m] " << text[t] << endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        case 1:
+          cout << "[\033[37m  Load resurs  \033[0m] " << text[t] << endl;
+          std::this_thread::sleep_for(std::chrono::milliseconds(500));
+          break;
+        case 4:
+          cout << "[\033[37m  Load resurs  \033[0m] " << text[t] << endl;
+          std::this_thread::sleep_for(std::chrono::milliseconds(500));
+          break;
+        case 6:
+          cout << "[\033[33m  Progressing  \033[0m] " << text[t] << endl;
+          std::this_thread::sleep_for(std::chrono::milliseconds(600));
+        default:
+          cout << "[\033[32m   Starting    \033[0m] " << text[t] << endl;
+          std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        break;
       }
+
     }
 
     cout << endl;
