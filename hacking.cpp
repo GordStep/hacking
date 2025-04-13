@@ -1,28 +1,14 @@
+#include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#include <ostream>
 #include <string>
-#include <unistd.h>
 #include <vector>
+#include <chrono>
+#include <thread>
 
 using namespace std;
 
-void
-writer (string text)
-{
-  cout << text;
-  for (int i = 0; i < 3; i++)
-    {
-      cout << "\033[2;" << (int)text.length () + 1 << "H     \n";
-      sleep (1);
-      printf ("\033[2;%dH.\n", (int)text.length () + 1);
-      sleep (1);
-      printf ("\033[2;%dH..\n", (int)text.length () + 1);
-      sleep (1);
-      printf ("\033[2;%dH...\n", (int)text.length () + 1);
-      sleep (1);
-    }
-  system ("clear");
-}
 
 int
 main ()
@@ -145,40 +131,65 @@ main ()
     " Ask mom to help"
   };
   char per = 'y';
-  system ("clear");
-  cout << "Are you ready to start hacking?(y/n) ";
+  
+  cout << "\b";
+  cout << "Are you ready to start hacking?(Y/n) ";
   cin >> per;
   if (per == 'n')
     {
       cout << "Ok..." << endl;
       return 0;
     }
-  writer ("Loading");
-  for (;;)
+  else if (per == 'Y' || per == 'y' || per == '\n')
+  {
+
+    cout << "Loading";
+
+    for (int i = 0; i < 3; i++)
+    {
+      for (int j = 0; j < 3; j++)
+      {
+        cout << "." << flush;
+        this_thread::sleep_for(chrono::milliseconds(300));
+      }
+      cout << '\b' << '\b' << '\b';
+    }
+    cout << endl;
+
+    for (;;)
     {
       int t = rand () % text.size ();
       int col = rand () % 10;
       if (col == 1)
-        {
-          cout << "[\033[37m  Load resurs  \033[0m] " << text[t] << endl;
-          usleep (500000);
-        }
+      {
+        cout << "[\033[37m  Load resurs  \033[0m] " << text[t] << endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      }
       else if (col == 4)
-        {
-          cout << "[\033[31m   Stopping    \033[0m] " << text[t] << endl;
-          usleep (700000);
-        }
+      {
+        cout << "[\033[31m   Stopping    \033[0m] " << text[t] << endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(700));
+      }
       else if (col == 6)
-        {
-          cout << "[\033[33m  Progressing  \033[0m] " << text[t] << endl;
-          usleep (600000);
-        }
+      {
+        cout << "[\033[33m  Progressing  \033[0m] " << text[t] << endl;
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(600));
+      }
       else
-        {
-          cout << "[\033[32m   Starting    \033[0m] " << text[t] << endl;
-          usleep (200000);
-        }
+      {
+        cout << "[\033[32m   Starting    \033[0m] " << text[t] << endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+      }
     }
-  cout << endl;
+
+    cout << endl;
+  }
+
+  else 
+  {
+    cout << "Invalid input." << endl;
+  }
+
   return 0;
 }
