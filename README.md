@@ -13,27 +13,6 @@ cout << "[\033[37m  Load resurs  \033[0m] " << text[t] << endl;
 ```
 Вместо "37" мы пишем число отвечающее за цвет(коды цветов можно найти в интернете или методом подбора)
 
-
-### Способ вывода надписи "Loading..."
-```cpp
-void writer (string text)
-{
-  cout << text;
-  for (int i = 0; i < 3; i++)
-    {
-      cout << "\033[2;" << (int)text.length () + 1 << "H     \n";
-      sleep (1);
-      printf ("\033[2;%dH.\n", (int)text.length () + 1);
-      sleep (1);
-      printf ("\033[2;%dH..\n", (int)text.length () + 1);
-      sleep (1);
-      printf ("\033[2;%dH...\n", (int)text.length () + 1);
-      sleep (1);
-    }
-  system ("clear");
-}
-```
-
 Командой:
 ```cpp
 \033[#;#dH.\n // вместо "#;#" пишем "строку;столбец"
