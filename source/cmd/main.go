@@ -5,12 +5,16 @@ import (
 	"fmt"
 	"os"
 	"slices"
+	"source/pkg/loader"
+	"source/pkg/printer"
 	"time"
 )
 
+const DATA_PATH = "data/data.txt"
+
 func registration() string {
 
-	agree := []string{"y", "Y"}
+	agree := []string{"y", "Y", "\n"}
 
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -43,22 +47,29 @@ func loading() {
 	fmt.Printf("\rLoaded!    \n")
 }
 
-func loader(path string) []string {
-	return []string{}
-}
-
-func printer() {
-
-}
-
 func main() {
 	fmt.Print("Are you ready to start hacking?(Y/n) ")
 
 	res := registration()
 
-	if res == "ok" {
-		loading()
+	switch res {
+	case "ok":
+		ok, lines := loader.Loader(DATA_PATH)
+		if ok {
+			// for _, line := range lines {
+			// 	fmt.Println(line)
+			// }
+			loading()
+		}
+		printer.Print_lines(lines)
+		return
 
+	case "no":
+		fmt.Print("Aborting!")
+		return
+	case "err":
+		fmt.Print("Invalid imput.")
+		return
 	}
 
 }
