@@ -4,13 +4,15 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"runtime"
 	"slices"
 	"source/pkg/loader"
 	"source/pkg/printer"
+	status "source/pkg/statuses"
 	"time"
 )
 
-const DATA_PATH = "data/data.txt"
+const DATA_PATH = "data.txt"
 
 func registration() string {
 
@@ -55,12 +57,11 @@ func main() {
 	switch res {
 	case "ok":
 		ok, lines := loader.Loader(DATA_PATH)
-		if ok {
-			// for _, line := range lines {
-			// 	fmt.Println(line)
-			// }
-			loading()
+		if !ok {
+			fmt.Println("The file data.txt not found, standard strings are used!")
+			lines = status.GetStrings()
 		}
+
 		printer.Print_lines(lines)
 		return
 
@@ -72,4 +73,11 @@ func main() {
 		return
 	}
 
+}
+
+func waitForExit() {
+	if runtime.GOOS == "windows" {
+		fmt.Println("\nНажмите Enter для выхода...")
+		fmt.Scanln()
+	}
 }
