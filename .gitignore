@@ -1,5 +1,5 @@
 bin/
-*.exe
+
 *.exe~
 *.dll
 *.so
