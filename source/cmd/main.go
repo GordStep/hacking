@@ -9,6 +9,7 @@ import (
 	"source/pkg/loader"
 	"source/pkg/printer"
 	status "source/pkg/statuses"
+	"sync"
 	"time"
 )
 
@@ -16,7 +17,7 @@ const DATA_PATH = "data.txt"
 
 func registration() string {
 
-	agree := []string{"y", "Y", "\n"}
+	agree := []string{"y", "Y", ""}
 
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -38,7 +39,9 @@ func registration() string {
 	return "err"
 }
 
-func loading() {
+func loading(wg *sync.WaitGroup) {
+	defer wg.Done()
+
 	spinner := []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
 
 	fmt.Print("Loading ")
@@ -51,12 +54,18 @@ func loading() {
 
 func main() {
 	fmt.Print("Are you ready to start hacking?(Y/n) ")
-
 	res := registration()
+
+	var wg sync.WaitGroup
+
+	wg.Add(1)
+	go loading(&wg)
 
 	switch res {
 	case "ok":
 		ok, lines := loader.Loader(DATA_PATH)
+
+		wg.Wait()
 		if !ok {
 			fmt.Println("The file data.txt not found, standard strings are used!")
 			lines = status.GetStrings()
@@ -72,6 +81,7 @@ func main() {
 		fmt.Print("Invalid imput.")
 		return
 	}
+	wg.Wait()
 
 }
 

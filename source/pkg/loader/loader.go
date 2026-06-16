@@ -7,6 +7,10 @@ import (
 )
 
 func Loader(path string) (bool, []string) {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return false, []string{}
+	}
+
 	text_data := make([]string, 0, 10)
 
 	file, err := os.Open(path)
